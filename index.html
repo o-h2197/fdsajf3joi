@@ -12,12 +12,14 @@
 <script>
 // パスワードチェック
 const pass = prompt("パスワードを入力してください");
+
 if (pass !== "202406") {
     document.body.innerHTML = "<p style='padding:20px; font-size:1.2rem;'>アクセスできません</p>";
     throw new Error("Unauthorized");
 }
-</script>
 
+// 本編HTMLを挿入（scriptタグは含めない）
+document.body.innerHTML = `
 <div id="container">
     <div class="line">今日、あなたに伝えたいことがあります。</div>
     <div class="line">一緒に過ごしてきた時間の中で、</div>
@@ -34,7 +36,13 @@ if (pass !== "202406") {
         ありがとう。これからもよろしくね。
     </div>
 </div>
+`;
 
-<script src="script.js"></script>
+// script.js を後から読み込む（これが安全）
+const s = document.createElement("script");
+s.src = "script.js";
+document.body.appendChild(s);
+</script>
+
 </body>
 </html>
