@@ -1,52 +1,46 @@
-// 一行ずつフェードイン
-document.addEventListener("DOMContentLoaded", () => {
-    const lines = document.querySelectorAll(".line");
-    let delay = 0;
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大切なあなたへ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-    lines.forEach((line) => {
-        setTimeout(() => {
-            line.style.opacity = 1;
-        }, delay);
-        delay += 2000;
-    });
+<body>
+<script>
+// パスワードチェック
+const pass = prompt("パスワードを入力してください");
 
-    // 「はい」ボタン
-    const yesBtn = document.getElementById("yesBtn");
-    const yesMessage = document.getElementById("yesMessage");
+if (pass !== "202406") {
+    document.body.innerHTML = "<p style='padding:20px; font-size:1.2rem;'>アクセスできません</p>";
+    throw new Error("Unauthorized");
+}
 
-    yesBtn.addEventListener("click", () => {
-        yesMessage.classList.remove("hidden");
-    });
+// 本編HTMLを挿入（scriptタグは含めない）
+document.body.innerHTML = `
+<div id="container">
+    <div class="line">今日、あなたに伝えたいことがあります。</div>
+    <div class="line">一緒に過ごしてきた時間の中で、</div>
+    <div class="line">あなたの優しさに何度も救われてきました。</div>
+    <div class="line">これからの未来も、隣で笑っていてほしい。</div>
+    <div class="line final">結婚してください。</div>
 
-    // 「いいえ」ボタン（段階式）
-    const noBtn = document.getElementById("noBtn");
-    let noCount = 0;
+    <div id="buttons">
+        <button id="yesBtn">はい</button>
+        <button id="noBtn">いいえ</button>
+    </div>
 
-    const messages = [
-        "ほんとにいいの？",
-        "後悔しない？",
-        "もう一度考えて？",
-        "押さない方がいいと思うよ？"
-    ];
+    <div id="yesMessage" class="hidden">
+        ありがとう。これからもよろしくね。
+    </div>
+</div>
+`;
 
-    noBtn.addEventListener("click", () => {
-        noCount++;
-
-        if (noCount <= messages.length) {
-            // メッセージを切り替える
-            noBtn.textContent = messages[noCount - 1];
-        } else {
-            // 5回目以降は逃げるモード
-            noBtn.textContent = "逃げるよ！";
-        }
-    });
-
-    // 逃げる動き（5回目以降のみ）
-    noBtn.addEventListener("mouseover", () => {
-        if (noCount > messages.length) {
-            const x = Math.random() * 300 - 150;
-            const y = Math.random() * 300 - 150;
-            noBtn.style.transform = `translate(${x}px, ${y}px)`;
-        }
-    });
-});
+// script.js を後から読み込む（これが安全で確実）
+const s = document.createElement("script");
+s.src = "script.js";
+document.body.appendChild(s);
+</script>
+</body>
+</html>
