@@ -12,21 +12,27 @@
 <script>
 // パスワードチェック
 const pass = prompt("パスワードを入力してください");
-
-// パスワードが違う場合は即終了
 if (pass !== "202406") {
     document.body.innerHTML = "<p style='padding:20px; font-size:1.2rem;'>アクセスできません</p>";
-    throw new Error("Unauthorized"); // ここで後続のJSを止める
+    throw new Error("Unauthorized");
 }
 </script>
 
-<!-- ここから先はパスワードが正しい時だけ描画される -->
 <div id="container">
     <div class="line">今日、あなたに伝えたいことがあります。</div>
     <div class="line">一緒に過ごしてきた時間の中で、</div>
     <div class="line">あなたの優しさに何度も救われてきました。</div>
     <div class="line">これからの未来も、隣で笑っていてほしい。</div>
     <div class="line final">結婚してください。</div>
+
+    <div id="buttons">
+        <button id="yesBtn">はい</button>
+        <button id="noBtn">いいえ</button>
+    </div>
+
+    <div id="yesMessage" class="hidden">
+        ありがとう。これからもよろしくね。
+    </div>
 </div>
 
 <script src="script.js"></script>
