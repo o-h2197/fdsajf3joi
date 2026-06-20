@@ -1,3 +1,4 @@
+/* 全体の基本設定 */
 body {
     margin: 0;
     padding: 0;
@@ -7,15 +8,17 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
+/* 本編コンテナ */
 #container {
     width: 90%;
     max-width: 600px;
     text-align: center;
 }
 
+/* フェードインする文章 */
 .line {
     opacity: 0;
     font-size: 1.4rem;
@@ -30,6 +33,7 @@ body {
     font-weight: bold;
 }
 
+/* ボタン */
 #buttons {
     margin-top: 40px;
 }
@@ -51,11 +55,48 @@ button {
 #noBtn {
     background: #e53935;
     color: white;
-    position: relative;
 }
 
+/* 「はい」を押した後のメッセージ */
 .hidden {
     display: none;
+}
+
+#yesMessage {
     margin-top: 30px;
     font-size: 1.6rem;
+}
+
+/* ======== ここからオーバーレイ画面 ======== */
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#overlayText {
+    font-size: 2rem;
+    opacity: 0.2;
+    margin-bottom: 40px;
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+#overlayYes {
+    font-size: 2rem;
+    padding: 20px 40px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.5s ease;
 }

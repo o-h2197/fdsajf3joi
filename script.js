@@ -1,52 +1,64 @@
-// 一行ずつフェードイン
 document.addEventListener("DOMContentLoaded", () => {
+
+    // フェードイン
     const lines = document.querySelectorAll(".line");
     let delay = 0;
-
     lines.forEach((line) => {
-        setTimeout(() => {
-            line.style.opacity = 1;
-        }, delay);
+        setTimeout(() => line.style.opacity = 1, delay);
         delay += 2000;
     });
 
-    // 「はい」ボタン
+    // はい（本編）
     const yesBtn = document.getElementById("yesBtn");
     const yesMessage = document.getElementById("yesMessage");
-
     yesBtn.addEventListener("click", () => {
         yesMessage.classList.remove("hidden");
     });
 
-    // 「いいえ」ボタン（段階式）
+    // いいえ → 別画面へ
     const noBtn = document.getElementById("noBtn");
-    let noCount = 0;
+    const overlay = document.getElementById("overlay");
+    const overlayText = document.getElementById("overlayText");
+    const overlayYes = document.getElementById("overlayYes");
 
     const messages = [
         "ほんとにいいの？",
         "後悔しない？",
-        "もう一度考えて？",
-        "押さない方がいいと思うよ？"
+        "まだ考え直せるよ？",
+        "本当に押すの？"
     ];
 
-    noBtn.addEventListener("click", () => {
-        noCount++;
+    let step = 0;
 
-        if (noCount <= messages.length) {
-            // メッセージを切り替える
-            noBtn.textContent = messages[noCount - 1];
-        } else {
-            // 5回目以降は逃げるモード
-            noBtn.textContent = "逃げるよ！";
-        }
+    noBtn.addEventListener("click", () => {
+        overlay.classList.remove("hidden");
+        showNextOverlay();
     });
 
-    // 逃げる動き（5回目以降のみ）
-    noBtn.addEventListener("mouseover", () => {
-        if (noCount > messages.length) {
-            const x = Math.random() * 300 - 150;
-            const y = Math.random() * 300 - 150;
-            noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    function showNextOverlay() {
+        if (step < messages.length) {
+            overlayText.textContent = messages[step];
+            overlayText.style.opacity = 0.2;
+            overlayText.style.transform = "scale(1)";
+            setTimeout(() => {
+                overlayText.style.opacity = 0.5;
+                overlayText.style.transform = "scale(1.2)";
+            }, 50);
+
+            // はいボタンを大きくする
+            overlayYes.style.transform = `scale(${1 + step * 0.5})`;
+
+            step++;
+        } else {
+            // 最終段階
+            overlayText.textContent = "もう…押して？";
+            overlayYes.style.transform = "scale(3)";
         }
+    }
+
+    // オーバーレイの「はい」
+    overlayYes.addEventListener("click", () => {
+        overlayText.textContent = "ありがとう。これからもよろしくね。";
+        overlayYes.style.display = "none";
     });
 });

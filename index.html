@@ -12,12 +12,12 @@
 // パスワードチェック
 const pass = prompt("パスワードを入力してください");
 
-if (pass !== "20230316") {
+if (pass !== "202406") {
     document.body.innerHTML = "<p style='padding:20px; font-size:1.2rem;'>アクセスできません</p>";
     throw new Error("Unauthorized");
 }
 
-// HTMLを安全に生成
+// 本編HTMLを生成
 const container = document.createElement("div");
 container.id = "container";
 container.innerHTML = `
@@ -36,10 +36,19 @@ container.innerHTML = `
         ありがとう。これからもよろしくね。
     </div>
 `;
-
 document.body.appendChild(container);
 
-// script.js を後から読み込む
+// オーバーレイ画面
+const overlay = document.createElement("div");
+overlay.id = "overlay";
+overlay.classList.add("hidden");
+overlay.innerHTML = `
+    <div id="overlayText"></div>
+    <button id="overlayYes">はい</button>
+`;
+document.body.appendChild(overlay);
+
+// script.js を読み込む
 const s = document.createElement("script");
 s.src = "script.js";
 document.body.appendChild(s);
