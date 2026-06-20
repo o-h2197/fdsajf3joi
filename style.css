@@ -120,3 +120,63 @@ button {
     position: relative;
     transition: left 0.2s ease, top 0.2s ease;
 }
+/* ===== スマホ最適化 ===== */
+@media screen and (max-width: 600px) {
+
+    body {
+        background-size: cover;
+        background-position: center;
+    }
+
+    #container {
+        max-width: 95%;
+        padding: 0 10px;
+    }
+
+    .line {
+        font-size: 1.1rem;
+        white-space: normal; /* ← スマホでは折り返す */
+        line-height: 1.6;
+    }
+
+    .final {
+        font-size: 1.4rem;
+    }
+
+    /* 最初のボタン */
+    #buttons {
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    #buttons button {
+        width: 80%;
+        font-size: 1.4rem;
+        padding: 14px 0;
+    }
+
+    /* オーバーレイ */
+    #overlayText {
+        font-size: 1.6rem;
+        padding: 0 10px;
+        line-height: 1.5;
+    }
+
+    #overlayButtons {
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 40px;
+    }
+
+    #overlayButtons button {
+        width: 70%;
+        font-size: 1.4rem;
+        padding: 14px 0;
+    }
+
+    /* 逃げるいいえの移動範囲をスマホ向けに調整 */
+    #overlayNo {
+        max-width: 150px;
+    }
+}
