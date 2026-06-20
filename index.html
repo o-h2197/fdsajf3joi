@@ -5,38 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>大切なあなたへ</title>
     <link rel="stylesheet" href="style.css">
-</head>
-<body>
 
+    <!-- ★ 最初のアクセスパスワード（document.write を使わない安全版） -->
     <script>
-        // ★ 最初のアクセスパスワード
-        const ACCESS_PASSWORD = "20230316";  // ← 好きなパスワードに変更
-        
-        const input = prompt("パスワードを入力してください");
-        
+        const ACCESS_PASSWORD = "20230316"; // ← 好きなパスワードに変更
+        const input = prompt("いつ出会いなおしたっけな(yyyymmdd)");
+
         if (input !== ACCESS_PASSWORD) {
-            document.body.innerHTML = "<p style='padding:20px; font-size:1.4rem;'>アクセスできません</p>";
+            // ★ body が描画される前に完全に潰す
+            document.addEventListener("DOMContentLoaded", () => {
+                document.body.innerHTML = "<p style='padding:20px; font-size:1.4rem;'>アクセスできません</p>";
+            });
             throw new Error("Unauthorized");
         }
-    </script>    
-    <div id="container"></div>
+    </script>
+</head>
 
-    <div id="buttons">
-        <button id="yesBtn">はい</button>
-        <button id="noBtn">いいえ</button>
-    </div>
+<body>
 
-    <div id="overlay">
-        <div id="overlayBg"></div>
-        <div id="overlayContent">
-            <div id="overlayText"></div>
-            <div id="overlayButtons">
-                <button id="overlayYes">はい</button>
-                <button id="overlayNo">いいえ</button>
-            </div>
+<div id="container"></div>
+
+<div id="buttons">
+    <button id="yesBtn">はい</button>
+    <button id="noBtn">いいえ</button>
+</div>
+
+<div id="overlay">
+    <div id="overlayBg"></div>
+    <div id="overlayContent">
+        <div id="overlayText"></div>
+        <div id="overlayButtons">
+            <button id="overlayYes">はい</button>
+            <button id="overlayNo">いいえ</button>
         </div>
     </div>
+</div>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

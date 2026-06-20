@@ -47,8 +47,29 @@ document.addEventListener("DOMContentLoaded", () => {
         if (bgm.paused) bgm.play().catch(() => {});
     }
 
-    yesBtn.addEventListener("click", startBgm, { once: true });
-    noBtn.addEventListener("click", startBgm, { once: true });
+    /* ===== はいが押されたら共通で動く処理 ===== */
+    function onYesPressed() {
+        startBgm();
+
+        overlayButtons.style.opacity = 0;
+        overlayText.style.opacity = 0;
+
+        setTimeout(() => {
+            overlayText.textContent = "これからも、末永くすえながぁぁぁぁぁぁくよろしくお願いします。";
+            overlayText.style.opacity = 1;
+        }, 300);
+    }
+
+    /* ===== 最初のはい（オーバーレイを開くように修正） ===== */
+    yesBtn.addEventListener("click", () => {
+        startBgm();
+    
+        // ★ 最初のはいは、質問スキップして最終処理へ
+        overlay.style.display = "flex";
+        overlayBg.style.opacity = 1;
+    
+        onYesPressed();
+    });
 
     /* ===== オーバーレイ ===== */
 
@@ -70,8 +91,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let yesScale = 1;
     let escapeMode = false;
 
+    /* ===== 最初のいいえ ===== */
     noBtn.addEventListener("click", () => {
 
+        startBgm();
         document.getElementById("buttons").style.display = "none";
 
         overlay.style.display = "flex";
@@ -159,14 +182,8 @@ document.addEventListener("DOMContentLoaded", () => {
         overlayNo.style.top = `${Math.random() * (maxY - minY) + minY}px`;
     }
 
-    /* ===== 最後の「はい」 ===== */
+    /* ===== オーバーレイのはい（共通処理） ===== */
     overlayYes.addEventListener("click", () => {
-        overlayButtons.style.opacity = 0;
-        overlayText.style.opacity = 0;
-
-        setTimeout(() => {
-            overlayText.textContent = "これからも、末永くすえながぁぁぁぁぁぁくよろしくお願いします。";
-            overlayText.style.opacity = 1;
-        }, 300);
+        onYesPressed();
     });
 });
