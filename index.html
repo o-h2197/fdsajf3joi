@@ -8,24 +8,35 @@
 </head>
 <body>
 
-<div id="container"></div>
+    <script>
+        // ★ 最初のアクセスパスワード
+        const ACCESS_PASSWORD = "20230316";  // ← 好きなパスワードに変更
+        
+        const input = prompt("パスワードを入力してください");
+        
+        if (input !== ACCESS_PASSWORD) {
+            document.body.innerHTML = "<p style='padding:20px; font-size:1.4rem;'>アクセスできません</p>";
+            throw new Error("Unauthorized");
+        }
+    </script>    
+    <div id="container"></div>
 
-<div id="buttons">
-    <button id="yesBtn">はい</button>
-    <button id="noBtn">いいえ</button>
-</div>
+    <div id="buttons">
+        <button id="yesBtn">はい</button>
+        <button id="noBtn">いいえ</button>
+    </div>
 
-<div id="overlay">
-    <div id="overlayBg"></div>
-    <div id="overlayContent">
-        <div id="overlayText"></div>
-        <div id="overlayButtons">
-            <button id="overlayYes">はい</button>
-            <button id="overlayNo">いいえ</button>
+    <div id="overlay">
+        <div id="overlayBg"></div>
+        <div id="overlayContent">
+            <div id="overlayText"></div>
+            <div id="overlayButtons">
+                <button id="overlayYes">はい</button>
+                <button id="overlayNo">いいえ</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
