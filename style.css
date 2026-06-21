@@ -164,23 +164,22 @@ body {
 }
 /* スマホ最適化（画面幅600px以下） */
 @media screen and (max-width: 600px) {
-
     body {
-        font-size: 20px; /* rem基準を上げる */
-        background-attachment: scroll; /* ← fixedを無効化 */
-        background-size: cover;
-        background-position: center center;
+        background-attachment: scroll; /* fixedを無効化 */
+        background-size: contain;      /* ← cover → contain に変更 */
+        background-repeat: no-repeat;
+        background-position: center top; /* 上寄せで自然に見せる */
+        background-color: rgba(235, 210, 226, 0.575); /* 背景色で余白を埋める */
     }
 
     #wrapper {
-        align-items: flex-start; /* 上寄せにして自然に見せる */
+        align-items: flex-start;
         padding-top: 40px;
     }
 
     #messageContainer {
-        width: 94%;
-        max-width: none !important;
-        padding: 30px 20px !important;
+        width: 90%;
+        padding: 30px 20px;
         background: rgba(0, 0, 0, 0.55);
         box-shadow: none;
     }
@@ -188,28 +187,14 @@ body {
     .line {
         font-size: 1.7rem;
         line-height: 2.2;
-        word-break: break-word;
     }
 
     .line.final {
         font-size: 2.1rem;
         color: rgb(247, 250, 217);
     }
-
-    #buttons button,
-    #overlayButtons button {
-        font-size: 1.5rem;
-        padding: 16px 36px;
-    }
-
-    #overlayText {
-        font-size: 1.7rem;
-    }
-
-    #tapStart {
-        font-size: 1.9rem;
-    }
 }
+
 
 
 
