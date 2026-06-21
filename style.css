@@ -23,19 +23,32 @@ body {
 
 #messageContainer {
     max-width: 900px;
-    padding: 60px 80px; /* ← 100px 150px は大きすぎたので調整 */
+    padding: 60px 80px;
     background: rgba(0, 0, 0, 0.616);
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
 
-/* メッセージ行 */
+/* メッセージ行（PC） */
 .line {
     opacity: 0;
-    font-size: 1.3rem;
-    line-height: 1.3;
     margin-bottom: 10.6px;
     transition: opacity 1s ease;
+
+    /* 1行固定 */
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+
+    /* PC 基準サイズ */
+    font-size: 1.3rem;
+    line-height: 1.3;
+
+    /* はみ出し防止 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    transform-origin: left center;
 }
 
 .line.final {
@@ -162,14 +175,17 @@ body {
 #overlayNo {
     position: relative;
 }
+
 /* スマホ最適化（画面幅600px以下） */
 @media screen and (max-width: 600px) {
+
+    /* 背景の伸び防止 */
     body {
-        background-attachment: scroll; /* fixedを無効化 */
-        background-size: contain;      /* ← cover → contain に変更 */
+        background-attachment: scroll;
+        background-size: contain;
         background-repeat: no-repeat;
-        background-position: center top; /* 上寄せで自然に見せる */
-        background-color: rgba(235, 210, 226, 0.575); /* 背景色で余白を埋める */
+        background-position: center top;
+        background-color: rgba(235, 210, 226, 0.575);
     }
 
     #wrapper {
@@ -184,19 +200,23 @@ body {
         box-shadow: none;
     }
 
+    /* ★スマホで1行に収めるための自動縮小ロジック */
     .line {
-        white-space: nowrap;          /* 改行禁止 */
+        white-space: nowrap;
         display: block;
         width: 100%;
-        font-size: clamp(1rem, 5vw, 1.6rem); /* ← ここが自動縮小の肝 */
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        /* 画面幅に応じて自動縮小 */
+        font-size: calc(1.8rem - 0.3vw);
+        line-height: 1.8;
+
+        transform-origin: left center;
     }
 
     .line.final {
-        font-size: 2.1rem;
+        font-size: calc(2.2rem - 0.3vw);
         color: rgb(247, 250, 217);
     }
 }
-
-
-
-
