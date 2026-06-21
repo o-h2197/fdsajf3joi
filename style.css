@@ -23,7 +23,7 @@ body {
 
 #messageContainer {
     max-width: 900px;
-    padding: 100px 150px;
+    padding: 60px 80px; /* ← 100px 150px は大きすぎたので調整 */
     background: rgba(0, 0, 0, 0.616);
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
@@ -162,8 +162,8 @@ body {
 #overlayNo {
     position: relative;
 }
-/* スマホ用（画面幅600px以下） */
 @media screen and (max-width: 600px) {
+
     body {
         font-size: 18px;
         background-size: cover;
@@ -172,8 +172,8 @@ body {
 
     #messageContainer {
         width: 92%;
-        padding: 40px 20px; /* ← ここを大幅に減らす */
-        box-shadow: none;   /* スマホでは影を軽くして読みやすく */
+        padding: 30px 18px !important; /* ← 強制上書き */
+        max-width: none !important;    /* ← 900px の制限を無効化 */
     }
 
     .line {
@@ -199,4 +199,5 @@ body {
         font-size: 1.8rem;
     }
 }
+
 
