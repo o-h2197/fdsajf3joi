@@ -29,36 +29,43 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
 
-/* メッセージ行（PC） */
+/* メッセージ行 */
 .line {
     opacity: 0;
-    margin-bottom: 10.6px;
+    margin-bottom: 18px;
     transition: opacity 1s ease;
 
-    /* 1行固定 */
     white-space: nowrap;
     display: block;
     width: 100%;
+    text-align: center;
 
-    /* PC 基準サイズ */
     font-size: 1.3rem;
-    line-height: 1.3;
+    line-height: 1.4;
 
-    /* はみ出し防止 */
     overflow: hidden;
-    text-overflow: ellipsis;
+    transform-origin: center;
 
-    transform-origin: left center;
+    position: relative;
+}
+
+/* 手紙っぽい細い下線 */
+.line::after {
+    content: "";
+    display: block;
+    width: 60%;
+    margin: 6px auto 0;
+    border-bottom: 1px solid rgba(255,255,255,0.35);
 }
 
 .line.final {
-    margin-top: 20px;
+    margin-top: 28px;
     font-size: 1.9rem;
     font-weight: 700;
     color: rgb(247, 250, 217);
 }
 
-/* はい・いいえボタン（最初の） */
+/* ボタン */
 #buttons {
     margin-top: 24px;
     display: flex;
@@ -106,7 +113,7 @@ body {
     100% { opacity: 1; }
 }
 
-/* オーバーレイ全体 */
+/* オーバーレイ */
 #overlay {
     position: fixed;
     inset: 0;
@@ -135,7 +142,6 @@ body {
     text-align: center;
 }
 
-/* オーバーレイのテキスト */
 #overlayText {
     min-height: 3em;
     font-size: 1.2rem;
@@ -144,7 +150,6 @@ body {
     transition: opacity 0.3s ease;
 }
 
-/* オーバーレイのボタン */
 #overlayButtons {
     display: flex;
     justify-content: center;
@@ -171,21 +176,18 @@ body {
     background: #ff8fa0;
 }
 
-/* 逃げるいいえ用 */
 #overlayNo {
     position: relative;
 }
 
-/* スマホ最適化（画面幅600px以下） */
+/* スマホ最適化 */
 @media screen and (max-width: 600px) {
 
-    /* 背景の伸び防止 */
     body {
         background-attachment: scroll;
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center top;
-        background-color: rgba(235, 210, 226, 0.575);
     }
 
     #wrapper {
@@ -200,23 +202,12 @@ body {
         box-shadow: none;
     }
 
-    /* ★スマホで1行に収めるための自動縮小ロジック */
     .line {
-        white-space: nowrap;
-        display: block;
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
-        /* 画面幅に応じて自動縮小 */
         font-size: calc(1.8rem - 0.3vw);
         line-height: 1.8;
-
-        transform-origin: left center;
     }
 
     .line.final {
         font-size: calc(2.2rem - 0.3vw);
-        color: rgb(247, 250, 217);
     }
 }

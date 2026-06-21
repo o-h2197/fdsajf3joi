@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>大事な話があります</title>
-    <link rel="stylesheet" href="style.css">
-        <!-- ★ 最初のアクセスパスワード（document.write を使わない安全版） -->
+
+    <!-- パスワード認証 -->
     <script>
-        const ACCESS_PASSWORD = "20230316"; // ← 好きなパスワードに変更
+        const ACCESS_PASSWORD = "20230316";
         const input = prompt("いつ出会いなおしたっけな(yyyymmdd)");
 
         if (input !== ACCESS_PASSWORD) {
-            // ★ body が描画される前に完全に潰す
             document.addEventListener("DOMContentLoaded", () => {
                 document.body.innerHTML = "<p style='padding:20px; font-size:1.4rem;'>アクセスできません</p>";
             });
             throw new Error("Unauthorized");
         }
     </script>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div id="tapStart">
-    画面を押下して始める
-</div>
+<div id="tapStart">画面を押下して始める</div>
 
 <div id="wrapper">
     <div id="messageContainer">
