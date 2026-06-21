@@ -32,19 +32,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const overlayNo = document.getElementById("overlayNo");
     const overlayContent = document.getElementById("overlayContent");
 
-    /* ===== メインメッセージ（1行ずつに分割済み） ===== */
+    /* ===== メインメッセージ（1行ずつ） ===== */
     const texts = [
         "あなたに伝えたいことがあります。",
         "一番自分に合う形を考えたときに、この方法を取りました。",
         "機械的でごめんなさい。",
         "思えば小学生から始まり、すごく長い付き合いになったね。",
         "あの頃、あなたにもらったラブレターから、あなたを意識しない日はなくなりました。",
-        "恥ずかしくて、渡せず鞄に潜めていたラブレターの返事もあったな。。(ほんとごめん)",
+        "渡せず鞄に潜めていたラブレターの返事もあったな。。(ほんとごめん)",
         "改めて出会いなおして早3年.....",
-        "日々笑い合ったり、時には、喧嘩をしたり。。",
-        "その一つ一つの出来事を、あなたと迎えられることが幸せです。",
-        "長くなりましたが、改めて。",
-        "苗字、沖崎にしませんか"
+        "日々笑い合ったり、時には喧嘩をしたり、、",
+        "日常にあなたが居て当たり前になりました。",
+        "そんなわけで....改めて。",
+        "同じ苗字を名乗るなんてどうでしょうか？"
     ];
 
     texts.forEach((t, i) => {
@@ -57,6 +57,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const lines = document.querySelectorAll(".line");
 
+    /* ===== 自動縮小ロジック ===== */
+    function fitTextToWidth() {
+        lines.forEach(line => {
+            const parentWidth = line.parentElement.offsetWidth;
+            let fontSize = parseFloat(window.getComputedStyle(line).fontSize);
+
+            while (line.scrollWidth > parentWidth && fontSize > 10) {
+                fontSize -= 0.5;
+                line.style.fontSize = fontSize + "px";
+            }
+        });
+    }
+
+    window.addEventListener("load", fitTextToWidth);
+    window.addEventListener("resize", fitTextToWidth);
+
+    /* ===== フェードイン ===== */
     function startMainSequence() {
         let delay = 0;
         lines.forEach((line, index) => {
@@ -72,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    /* ===== 最初のタップで開始 ===== */
+    /* ===== 最初のタップ ===== */
     let started = false;
     tapStart.addEventListener("click", () => {
         if (started) return;
@@ -89,18 +106,53 @@ document.addEventListener("DOMContentLoaded", () => {
     function onYesPressed() {
         stopAllBgm();
         yesBgm.play().catch(() => {});
+        // 背景を白い光に切り替える
+        document.body.style.transition = "background-image 2s ease, background-color 2s ease";
+        document.body.style.backgroundImage = 'url("background_yes.jpg")';
+        document.body.style.backgroundColor = "rgba(255,255,255,0.8)";
 
+        // ボタン消す
         overlayNo.style.display = "none";
         overlayButtons.style.display = "none";
+        // 背景の文字（メインメッセージ）をふわっと消す
+        document.querySelectorAll(".line").forEach(line => {
+            line.style.transition = "opacity 1.5s ease";202
+            line.style.opacity = 0;
+        });
+        // 黒い縁（メッセージ枠）をふわっと消す
+        const msgBox = document.getElementById("messageContainer");
+        msgBox.style.transition = "opacity 1.5s ease";
+        msgBox.style.opacity = 0;
 
-        overlayButtons.style.opacity = 0;
+
+        // 背景を少し明るくする演出
+        overlayBg.style.transition = "opacity 1.5s ease";
+        overlayBg.style.opacity = 0.3;
+
+        // テキスト演出
         overlayText.style.opacity = 0;
+        overlayText.style.transition = "opacity 2s ease, transform 2s ease";
+        overlayText.style.transform = "translateY(10px)";
 
         setTimeout(() => {
-            overlayText.textContent = "これからも、末永くよろしくお願いします。";
+            overlayText.innerHTML = `
+                <span style="font-size:1.6rem; display:block; margin-bottom:12px;">
+                    ありがとう。
+                </span>
+                <span style="font-size:1.2rem; opacity:0.9;">
+                    これからも、よろしくお願いします！
+                </span>
+            `;
             overlayText.style.opacity = 1;
+            overlayText.style.transform = "translateY(0)";
         }, 300);
+
+        // 余韻のための追加演出（光のフェード）
+        setTimeout(() => {
+            overlayBg.style.opacity = 0.15;
+        }, 2500);
     }
+
 
     /* ===== いいえルート ===== */
     const messages = [
