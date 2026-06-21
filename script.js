@@ -1,15 +1,47 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const container = document.getElementById("container");
+    /* ===== BGM ===== */
+    const startBgm = new Audio("start.mp3");
+    const yesBgm = new Audio("yes.mp3");
+    const noBgm = new Audio("no.mp3");
 
+    startBgm.loop = true;
+    yesBgm.loop = true;
+    noBgm.loop = true;
+
+    function stopAllBgm() {
+        [startBgm, yesBgm, noBgm].forEach(a => {
+            a.pause();
+            a.currentTime = 0;
+        });
+    }
+
+    /* ===== 要素取得 ===== */
+    const container = document.getElementById("container");
+    const buttons = document.getElementById("buttons");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+
+    const tapStart = document.getElementById("tapStart");
+
+    const overlay = document.getElementById("overlay");
+    const overlayBg = document.getElementById("overlayBg");
+    const overlayText = document.getElementById("overlayText");
+    const overlayButtons = document.getElementById("overlayButtons");
+    const overlayYes = document.getElementById("overlayYes");
+    const overlayNo = document.getElementById("overlayNo");
+    const overlayContent = document.getElementById("overlayContent");
+
+    /* ===== メインメッセージ ===== */
     const texts = [
-        "あなたに伝えたいことがあります。<br>一番自分に合う形を考えたときに、この方法を取りました。<br>機械的でごめんなさい。",
+        "あなたに伝えたいことがあります。",
+        "一番自分に合う形を考えたときに、この方法を取りました。 <br> 機械的でごめんなさい。",
         "思えば小学生から始まり、すごく長い付き合いになったね。",
-        "あの頃、あなたにもらったラブレターから、あなたを意識しない日はなくなりました。",
-        "恥ずかしくて、渡せず鞄に潜めていたラブレターの返事もあったな。。(ほんとごめん)",
+        "あの頃、あなたにもらったラブレターから、 <br> あなたを意識しない日はなくなりました。",
+        "恥ずかしくて、渡せず鞄に潜めていた <br> ラブレターの返事もあったな。。(ほんとごめん)",
         "改めて出会いなおして早3年.....",
         "日々笑い合ったり、時には、喧嘩をしたり。。",
-        "その一つ一つの出来事を、あなたと迎えられることが幸せです。",
+        "その一つ一つの出来事を、<br> あなたと迎えられることが幸せです。",
         "長くなりましたが、改めて。",
         "苗字、沖崎にしませんか"
     ];
@@ -23,64 +55,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const lines = document.querySelectorAll(".line");
-    let delay = 0;
-    lines.forEach((line, index) => {
-        setTimeout(() => {
-            line.style.opacity = 1;
-            if (index === lines.length - 1) {
-                setTimeout(() => {
-                    document.getElementById("buttons").style.opacity = 1;
-                }, 1500);
-            }
-        }, delay);
-        delay += 2000;
-    });
 
-    /* ===== BGM ===== */
-    const bgm = new Audio("bgm.mp3");
-    bgm.loop = true;
-
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn = document.getElementById("noBtn");
-
-    function startBgm() {
-        if (bgm.paused) bgm.play().catch(() => {});
+    function startMainSequence() {
+        let delay = 0;
+        lines.forEach((line, index) => {
+            setTimeout(() => {
+                line.style.opacity = 1;
+                if (index === lines.length - 1) {
+                    setTimeout(() => {
+                        buttons.style.opacity = 1;
+                    }, 1500);
+                }
+            }, delay);
+            delay += 2000;
+        });
     }
 
-    /* ===== はいが押されたら共通で動く処理 ===== */
+    /* ===== 最初のタップで開始 ===== */
+    let started = false;
+    tapStart.addEventListener("click", () => {
+        if (started) return;
+        started = true;
+
+        stopAllBgm();
+        startBgm.play().catch(() => {});
+
+        tapStart.style.display = "none";
+        startMainSequence();
+    });
+
+    /* ===== はい共通処理 ===== */
     function onYesPressed() {
-        startBgm();
+        stopAllBgm();
+        yesBgm.play().catch(() => {});
+
+        // いいえボタンを完全に消す
+        overlayNo.style.display = "none";
+        overlayButtons.style.display = "none";
 
         overlayButtons.style.opacity = 0;
         overlayText.style.opacity = 0;
 
         setTimeout(() => {
-            overlayText.textContent = "これからも、末永くすえながぁぁぁぁぁぁくよろしくお願いします。";
+            overlayText.textContent = "これからも、末永くよろしくお願いします。",
             overlayText.style.opacity = 1;
         }, 300);
     }
 
-    /* ===== 最初のはい（オーバーレイを開くように修正） ===== */
-    yesBtn.addEventListener("click", () => {
-        startBgm();
-    
-        // ★ 最初のはいは、質問スキップして最終処理へ
-        overlay.style.display = "flex";
-        overlayBg.style.opacity = 1;
-    
-        onYesPressed();
-    });
-
-    /* ===== オーバーレイ ===== */
-
-    const overlay = document.getElementById("overlay");
-    const overlayBg = document.getElementById("overlayBg");
-    const overlayText = document.getElementById("overlayText");
-    const overlayButtons = document.getElementById("overlayButtons");
-    const overlayYes = document.getElementById("overlayYes");
-    const overlayNo = document.getElementById("overlayNo");
-    const overlayContent = document.getElementById("overlayContent");
-
+    /* ===== いいえルート用状態 ===== */
     const messages = [
         "結婚してくれるよね？",
         "え、、、？",
@@ -90,26 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let step = 0;
     let yesScale = 1;
     let escapeMode = false;
-
-    /* ===== 最初のいいえ ===== */
-    noBtn.addEventListener("click", () => {
-
-        startBgm();
-        document.getElementById("buttons").style.display = "none";
-
-        overlay.style.display = "flex";
-        setTimeout(() => overlayBg.style.opacity = 1, 10);
-
-        step = 0;
-        yesScale = 1;
-        escapeMode = false;
-
-        overlayNo.style.position = "relative";
-        overlayNo.style.left = "0px";
-        overlayNo.style.top = "0px";
-
-        showNextMessage();
-    });
 
     function showNextMessage() {
         overlayText.style.opacity = 0;
@@ -148,26 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 300);
     }
 
-    /* ===== いいえの動作 ===== */
-    overlayNo.addEventListener("click", () => {
-
-        if (escapeMode) {
-            warpNoButton();
-            return;
-        }
-
-        overlayButtons.style.opacity = 0;
-        setTimeout(showNextMessage, 300);
-    });
-
-    overlayNo.addEventListener("mousemove", () => {
-        if (escapeMode) warpNoButton();
-    });
-
-    overlayNo.addEventListener("touchstart", () => {
-        if (escapeMode) warpNoButton();
-    });
-
     function warpNoButton() {
         const rect = overlayContent.getBoundingClientRect();
         const w = overlayNo.offsetWidth;
@@ -182,7 +164,63 @@ document.addEventListener("DOMContentLoaded", () => {
         overlayNo.style.top = `${Math.random() * (maxY - minY) + minY}px`;
     }
 
-    /* ===== オーバーレイのはい（共通処理） ===== */
+    /* ===== 最初のはい ===== */
+    yesBtn.addEventListener("click", () => {
+        stopAllBgm();
+        yesBgm.play().catch(() => {});
+
+        buttons.style.display = "none";
+
+        overlay.style.display = "flex";
+        overlayBg.style.opacity = 1;
+
+        onYesPressed();
+    });
+
+    /* ===== 最初のいいえ ===== */
+    noBtn.addEventListener("click", () => {
+        stopAllBgm();
+        noBgm.play().catch(() => {});
+
+        buttons.style.display = "none";
+
+        overlay.style.display = "flex";
+        setTimeout(() => overlayBg.style.opacity = 1, 10);
+
+        step = 0;
+        yesScale = 1;
+        escapeMode = false;
+
+        overlayNo.style.display = "inline-block";
+        overlayButtons.style.display = "flex";
+        overlayButtons.style.opacity = 1;
+        overlayYes.style.transform = "scale(1)";
+        overlayNo.style.position = "relative";
+        overlayNo.style.left = "0px";
+        overlayNo.style.top = "0px";
+
+        showNextMessage();
+    });
+
+    /* ===== オーバーレイのいいえ ===== */
+    overlayNo.addEventListener("click", () => {
+        if (escapeMode) {
+            warpNoButton();
+            return;
+        }
+        overlayButtons.style.opacity = 0;
+        setTimeout(showNextMessage, 300);
+    });
+
+    overlayNo.addEventListener("mousemove", () => {
+        if (escapeMode) warpNoButton();
+    });
+
+    overlayNo.addEventListener("touchstart", () => {
+        if (escapeMode) warpNoButton();
+    });
+
+    /* ===== オーバーレイのはい ===== */
     overlayYes.addEventListener("click", () => {
         onYesPressed();
     });
