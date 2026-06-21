@@ -165,9 +165,15 @@ body {
 /* スマホ用（画面幅600px以下） */
 @media screen and (max-width: 600px) {
     body {
-        font-size: 18px; /* ← remの基準を大きくする */
+        font-size: 18px;
         background-size: cover;
         background-position: center;
+    }
+
+    #messageContainer {
+        width: 92%;
+        padding: 40px 20px; /* ← ここを大幅に減らす */
+        box-shadow: none;   /* スマホでは影を軽くして読みやすく */
     }
 
     .line {
@@ -179,11 +185,6 @@ body {
         font-size: 2rem;
     }
 
-    #messageContainer {
-        width: 90%;
-        padding: 20px;
-    }
-
     #buttons button,
     #overlayButtons button {
         font-size: 1.4rem;
@@ -192,6 +193,10 @@ body {
 
     #overlayText {
         font-size: 1.6rem;
+    }
+
+    #tapStart {
+        font-size: 1.8rem;
     }
 }
 
