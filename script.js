@@ -57,8 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const lines = document.querySelectorAll(".line");
 
-    /* ===== 自動縮小ロジック ===== */
+    /* ===== 自動縮小ロジック（初回のみ） ===== */
+    let textFitted = false;
+
     function fitTextToWidth() {
+        if (textFitted) return; // ← 2回目以降は実行しない
+
         lines.forEach(line => {
             const parentWidth = line.parentElement.offsetWidth;
             let fontSize = parseFloat(window.getComputedStyle(line).fontSize);
@@ -68,6 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 line.style.fontSize = fontSize + "px";
             }
         });
+
+        textFitted = true;
     }
 
     window.addEventListener("load", fitTextToWidth);
@@ -106,30 +112,36 @@ document.addEventListener("DOMContentLoaded", () => {
     function onYesPressed() {
         stopAllBgm();
         yesBgm.play().catch(() => {});
-        // 背景を白い光に切り替える
-        document.body.style.transition = "background-image 2s ease, background-color 2s ease";
-        document.body.style.backgroundImage = 'url("background_yes.jpg")';
-        document.body.style.backgroundColor = "rgba(255,255,255,0.8)";
 
-        // ボタン消す
-        overlayNo.style.display = "none";
-        overlayButtons.style.display = "none";
-        // 背景の文字（メインメッセージ）をふわっと消す
+        /* ① メイン文字をふわっと消す */
         document.querySelectorAll(".line").forEach(line => {
-            line.style.transition = "opacity 1.5s ease";202
+            line.style.transition = "opacity 1.2s ease";
             line.style.opacity = 0;
         });
-        // 黒い縁（メッセージ枠）をふわっと消す
-        const msgBox = document.getElementById("messageContainer");
-        msgBox.style.transition = "opacity 1.5s ease";
-        msgBox.style.opacity = 0;
 
+        /* ② messageContainer（黒い縁）を少し遅れて消す */
+        setTimeout(() => {
+            const msgBox = document.getElementById("messageContainer");
+            msgBox.style.transition = "opacity 1.2s ease";
+            msgBox.style.opacity = 0;
+        }, 600);
 
-        // 背景を少し明るくする演出
+        /* ③ 背景を白い光に切り替える */
+        setTimeout(() => {
+            document.body.style.transition = "background-image 2s ease, background-color 2s ease";
+            document.body.style.backgroundImage = 'url("background_yes.jpg")';
+            document.body.style.backgroundColor = "rgba(255,255,255,0.8)";
+        }, 600);
+
+        /* ④ ボタン消す */
+        overlayNo.style.display = "none";
+        overlayButtons.style.display = "none";
+
+        /* ⑤ オーバーレイ背景を柔らかく */
         overlayBg.style.transition = "opacity 1.5s ease";
         overlayBg.style.opacity = 0.3;
 
-        // テキスト演出
+        /* ⑥ 「ありがとう」演出 */
         overlayText.style.opacity = 0;
         overlayText.style.transition = "opacity 2s ease, transform 2s ease";
         overlayText.style.transform = "translateY(10px)";
@@ -145,14 +157,13 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             overlayText.style.opacity = 1;
             overlayText.style.transform = "translateY(0)";
-        }, 300);
+        }, 900);
 
-        // 余韻のための追加演出（光のフェード）
+        /* ⑦ 余韻の光 */
         setTimeout(() => {
             overlayBg.style.opacity = 0.15;
         }, 2500);
     }
-
 
     /* ===== いいえルート ===== */
     const messages = [
@@ -218,14 +229,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ===== 最初のはい ===== */
     yesBtn.addEventListener("click", () => {
-        stopAllBgm();
-        yesBgm.play().catch(() => {});
-
         buttons.style.display = "none";
-
         overlay.style.display = "flex";
         overlayBg.style.opacity = 1;
-
         onYesPressed();
     });
 
